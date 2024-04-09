@@ -5,8 +5,8 @@ export const InstructionsPage = () => {
         <>
             <nav className="navbar bg-body-tertiary fixed-top top-nav">
                 <div className="container-fluid">
-                    <div className="container" style="text-align: center;">
-                        <a className="navbar-brand" style="color: #fff;" href="#">Billing System</a>
+                    <div className="container" style={{textAlign: "center"}}>
+                        <a className="navbar-brand title" style={{color: "#fff"}} href="#">Billing System</a>
                     </div>
                     <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas"
                             data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"

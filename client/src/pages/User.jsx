@@ -1,12 +1,30 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 export const UserPage = () => {
+    const [data, setData] = useState([]);
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const response = await fetch(`${window.ENVIRONMENT.api}/user_info`, {
+                method: "GET",
+                credentials: "include", // Ensure that credentials are included in the request
+            }).then( response => response.json() )
+                .then( json => {
+                    setData( json )
+                })
+            // const jsonData = await response.json();
+            //
+            // setData(jsonData);
+        };
+
+        fetchUserData();
+    }, [])
+
     return (
         <>
             <nav className="navbar bg-body-tertiary fixed-top top-nav">
                 <div className="container-fluid">
-                    <div className="container" style="text-align: center;">
-                        <a className="navbar-brand" style="color: #fff;" href="#">Billing System</a>
+                    <div className="container" style={{textAlign: "center"}}>
+                        <a className="navbar-brand title" style={{color: "#fff"}} href="#">Billing System</a>
                     </div>
                     <button className="navbar-toggler" type="button" data-bs-toggle="offcanvas"
                             data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
@@ -43,20 +61,22 @@ export const UserPage = () => {
                 </div>
             </nav>
 
-            <div class="apply-translation">
-                {{#each userdata}}
-                <div class="dashboard">
+            <div className="apply-translation">
+                {/*{{#each userdata}}*/}
+                {data.map((dt) => (
+                <div className="dashboard">
                     <h1>User Information</h1>
                     <label><b>Github ID</b></label>
-                    <input class="form-control" type="text" value="{{githubId}}" aria-label="Disabled input example" disabled readonly>
+                    <input className="form-control" type="text" value={dt.githubId} aria-label="Disabled input example" disabled readOnly/>
                     <label><b>Display Name</b></label>
-                    <input class="form-control" type="text" value="{{displayName}}" aria-label="Disabled input example" disabled readonly>
+                    <input className="form-control" type="text" value={dt.displayName} aria-label="Disabled input example" disabled readOnly/>
                     <label><b>Github URL</b></label>
-                    <input class="form-control" type="text" value="{{githubUrl}}" aria-label="Disabled input example" disabled readonly>
+                    <input className="form-control" type="text" value={dt.githubUrl} aria-label="Disabled input example" disabled readOnly/>
                     <label><b>Created At</b></label>
-                    <input class="form-control" type="text" value="{{createdAt}}" aria-label="Disabled input example" disabled readonly>
+                    <input className="form-control" type="text" value={dt.createdAt} aria-label="Disabled input example" disabled readOnly/>
                 </div>
-                {{/each}}
+                ))}
+                {/*{{/each}}*/}
             </div>
 
         </>

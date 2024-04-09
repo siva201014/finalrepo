@@ -6,12 +6,12 @@ const { cache } = require("express/lib/application");
 
 //authenticate user
 const isAuth = (req, res, next) => {
-    if (req.user) {
+//    if (req.user) {
         next()
-    }
-    else {
-        res.redirect('/')
-    }
+//    }
+//     else {
+//         res.redirect('/')
+//     }
 }
 
 //check if user already logged-in
@@ -65,18 +65,22 @@ router.get('/', isGuest, (req, res) => {
 
 
 router.get('/dashboard', isAuth, async (req, res) => {
-    res.render('dashboard', { name: req.user.displayName })
+    let displayName = "ssunku6"
+    //res.render('dashboard', { name: req.user.displayName })
+    return res.json({username:displayName})
 })
 
 router.get('/billingsystem', isAuth, async (req, res) => {
     try {
         let total = 0
-        const billingdata = await Data.find({ githubId: req.user.githubId }).lean()
-        for(const item of billingdata){
-            total = total + (await item).afterDiscount //calculate total price
-        }
-        res.render('billingsystem', { username: req.user.displayName, billingdata: billingdata, id: req.user.githubId, total:total })
-        //res.json({ username: req.user.displayName, billingdata: billingdata, id: req.user.githubId, total:total })
+        // const billingdata = await Data.find({ githubId: req.user.githubId }).lean()
+        // for(const item of billingdata){
+        //     total = total + (await item).afterDiscount //calculate total price
+        // }
+        let username = "ssunku6"
+        let id = "128723424"
+        //res.render('billingsystem', { username: req.user.displayName, billingdata: billingdata, id: req.user.githubId, total:total })
+        res.json({ username: username, id: id, total:total })
     } catch (err) {
        res.render('error')
         //res.json('error')
@@ -89,10 +93,14 @@ router.get('/instructions', isAuth, (req, res) => {
 
 router.get('/user_info', isAuth, async (req, res) => {
     try {
-        const userdata = await User.find({ githubId: req.user.githubId }).lean()
-        res.render('user', { userdata: userdata }) //find data based in GitHub ID and render with this page
+        let githubId = "128723424"
+        //const userdata = await User.find({ githubId: req.user.githubId }).lean()
+        const userdata = await User.find({ githubId: githubId }).lean()
+        //res.render('user', { userdata: userdata }) //find data based in GitHub ID and render with this page
+        return res.json(userdata)
     } catch (err) {
-        res.render('error')
+        //res.render('error')
+        return res.json('error')
     }
 })
 

@@ -10,7 +10,9 @@ const GitHubStrategy = require('passport-github').Strategy;
 const cors = require('cors');
 
 //load the .env file in config, which contains personal information for connections
-dotenv.config({path: './config/.env'})
+//dotenv.config({path: './config/.env'})
+const path4=path.join(__dirname, "config", ".env")
+dotenv.config({ path:path4})
 
 connectDb()
 
@@ -24,7 +26,12 @@ const app = express()
 app.use(express.urlencoded({extended:false}))
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(express.json())
-app.use(cors());
+app.use(
+    cors({
+        origin: "http://localhost:5173", // React app's origin
+        credentials: true,
+    })
+)
 
 //method override for PUT and DELETE
 app.use(methodOverride(function (req, res) {

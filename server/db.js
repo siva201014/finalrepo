@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 const dotenv = require('dotenv') //for .env file
-dotenv.config({path: './config/.env'})
+//dotenv.config({path: './config/.env'})
+const path = require("path")
+const path4 = path.join(__dirname, "config", ".env")
+dotenv.config({ path: path4 })
 const url = `mongodb+srv://${process.env.USER}:${process.env.PASS}@${process.env.HOST}/billingsystemreact`
 
 //establishing mongodb connection
