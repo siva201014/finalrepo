@@ -6,6 +6,7 @@ export const UserPage = () => {
         const fetchUserData = async () => {
             const response = await fetch(`${window.ENVIRONMENT.api}/user_info`, {
                 method: "GET",
+                mode: "cors",
                 credentials: "include", // Ensure that credentials are included in the request
             }).then( response => response.json() )
                 .then( json => {

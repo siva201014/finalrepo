@@ -13,7 +13,7 @@ export const LoginPage = () => {
         if (response.ok) {
             // Parse the response body as JSON
             const responseData = await response.json();
-
+            debugger
             // Extract the redirectUrl from the response data
             const redirectUrl = responseData.redirectUrl;
 

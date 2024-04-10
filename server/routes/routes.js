@@ -6,12 +6,12 @@ const { cache } = require("express/lib/application");
 
 //authenticate user
 const isAuth = (req, res, next) => {
-//    if (req.user) {
+   if (req.user) {
         next()
-//    }
-//     else {
-//         res.redirect('/')
-//     }
+   }
+    else {
+        res.redirect('/')
+    }
 }
 
 //check if user already logged-in
@@ -73,14 +73,17 @@ router.get('/dashboard', isAuth, async (req, res) => {
 router.get('/billingsystem', isAuth, async (req, res) => {
     try {
         let total = 0
-        // const billingdata = await Data.find({ githubId: req.user.githubId }).lean()
-        // for(const item of billingdata){
-        //     total = total + (await item).afterDiscount //calculate total price
-        // }
         let username = "ssunku6"
         let id = "128723424"
+        //const billingdata = await Data.find({ githubId: req.user.githubId }).lean()
+        const billingdata = await Data.find({ githubId: id }).lean()
+        for(const item of billingdata){
+            total = total + (await item).afterDiscount //calculate total price
+        }
+
         //res.render('billingsystem', { username: req.user.displayName, billingdata: billingdata, id: req.user.githubId, total:total })
-        res.json({ username: username, id: id, total:total })
+        console.log(username, id, billingdata)
+        res.json({ username: username, billingdata: billingdata, id: id, total:total })
     } catch (err) {
        res.render('error')
         //res.json('error')
@@ -106,7 +109,7 @@ router.get('/user_info', isAuth, async (req, res) => {
 
 router.post('/add-data', isAuth, async (req, res) => {
     try {
-        req.body.user = req.user.id
+        // req.body.user = req.user.id
         let bilingObj = {
             cost: req.body.cost,
             quantity: req.body.quantity
@@ -116,9 +119,12 @@ router.post('/add-data', isAuth, async (req, res) => {
         req.body.discount = billingData.discount
         req.body.afterDiscount = billingData.afterdiscount
         await Data.create(req.body) //add data to database
-        res.redirect('/billingsystem')
+        //res.redirect('/billingsystem')
+        console.log(req.body)
+        return res.json(req.body)
     } catch (err) {
-        res.render('error')
+        //res.render('error')
+        return res.json('error')
     }
 })
 

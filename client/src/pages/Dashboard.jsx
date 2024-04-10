@@ -7,10 +7,11 @@ export const DashboardPage = () => {
         const fetchData = async () => {
             const response = await fetch(`${window.ENVIRONMENT.api}/dashboard`, {
                 method: "GET",
+                mode: "cors",
                 credentials: "include", // Ensure that credentials are included in the request
             });
             const jsonData = await response.json();
-            console.log(jsonData)
+            debugger
             setData(jsonData);
         };
 
