@@ -2,13 +2,12 @@ const express = require("express");
 const dotenv = require("dotenv"); //for .env file
 const connectDb = require("./db");
 const exphbs = require("express-handlebars");
-
+const session = require("express-session");
 const path = require("path");
 const methodOverride = require("method-override");
 const bodyParser = require("body-parser");
 const GitHubStrategy = require("passport-github").Strategy;
 const cors = require("cors");
-
 
 //load the .env file in config, which contains personal information for connections
 //dotenv.config({path: './config/.env'})
@@ -76,5 +75,4 @@ app.use(express.static(path.join(__dirname, "public")));
 //call the routes
 app.use("/auth", require("./routes/auth"));
 app.use("/", require("./routes/routes"));
-app.listen(3000)
-
+app.listen(3000);
