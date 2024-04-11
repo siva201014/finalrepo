@@ -11,7 +11,7 @@ router.get("/github", (req, res) => {
     "?client_id=" +
     process.env.GITHUB_ID +
     "&redirect_uri=" +
-    encodeURIComponent("http://localhost:3000/auth/github/callback") +
+    encodeURIComponent(`${process.env.SELF_REFERENCE_URL}/auth/github/callback`) +
     "&scope=profile";
   res.json({ redirectUrl: url });
 });
