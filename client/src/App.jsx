@@ -10,7 +10,7 @@ import { ErrorPage } from "./pages/Error.jsx";
 import { UserPage } from "./pages/User.jsx";
 import { InstructionsPage } from "./pages/instructions.jsx";
 
-window.ENVIRONMENT = { api: "http://localhost:3000" };
+window.ENVIRONMENT = { api: "https://finalrepo-server.onrender.com" };
 function App() {
   return (
     <div>
