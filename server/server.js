@@ -18,6 +18,7 @@ connectDb();
 
 //passport config for github authentication
 const passport = require("./config/passport");
+const { trusted } = require("mongoose");
 
 const app = express();
 
@@ -55,8 +56,8 @@ app.set("view engine", "handlebars");
 app.use(
   session({
     secret: "cs4241a3-billingsystems",
-    resave: true,
-    saveUninitialized: false,
+    resave: trusted,
+    saveUninitialized: true,
     cookie: {
       //store in server, not browser
       httpOnly: true,

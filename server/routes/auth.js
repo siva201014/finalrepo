@@ -1,6 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
+const Data = require("../models/Data");
+const Session = require("../models/Session");
 
 //routes for GitHub strategy
 // Route to initiate the GitHub OAuth flow
@@ -11,7 +13,9 @@ router.get("/github", (req, res) => {
     "?client_id=" +
     process.env.GITHUB_ID +
     "&redirect_uri=" +
-    encodeURIComponent(`${process.env.SELF_REFERENCE_URL}/auth/github/callback`) +
+    encodeURIComponent(
+      `${process.env.SELF_REFERENCE_URL}/auth/github/callback`
+    ) +
     "&scope=profile";
   res.json({ redirectUrl: url });
 });
@@ -20,9 +24,20 @@ router.get("/github", (req, res) => {
 router.get(
   "/github/callback",
   passport.authenticate("github", { failureRedirect: "/" }),
-  (req, res) => {
+  async (req, res) => {
     // Successful authentication, redirect home or to dashboard
-
+    // res.cookie("sessionID", req.sessionID, { httpOnly: true });
+    const sesion = await Session.create({
+      session: {
+        session_id: req.sessionID,
+        creation_date: new Date(),
+         github_id: req.user.githubId,
+        // ip: requestIp.getClientIp(req.ip),
+      },
+    });
+    console.log('-----sess');
+    console.log(sesion);
+    console.log(req.user)
     res.redirect(`${process.env.REACT_HOST}/dashboard`);
   }
 );

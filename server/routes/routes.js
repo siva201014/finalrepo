@@ -3,6 +3,8 @@ const router = express.Router();
 const Data = require("../models/Data");
 const User = require("../models/User");
 const { cache } = require("express/lib/application");
+const Session = require("../models/Session");
+
 
 //authenticate user
 const isAuth = (req, res, next) => {
@@ -54,8 +56,18 @@ function calculatePrice(bilingObj) {
 }
 
 //routes to redirect to user to different pages
-router.get("/", (req, res) => {
-  if (req.session?.passport?.user) {
+router.get("/", async (req, res) => {
+  const ipAdderss = await Session.find()
+    .sort({ creation_date: -1 })
+    .exec();
+    let isAuth = false;
+    for(const _id of ipAdderss) {
+      if(_id.session.session_id == req.sessionID) {
+        console.log('authenticated');
+        isAuth= true;
+      }
+    }
+  if (isAuth) {
     return res.json({ isAuthenticated: true });
   } else {
     return res.json({ isAuthenticated: false });
