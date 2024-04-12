@@ -57,8 +57,8 @@ function calculatePrice(bilingObj) {
 router.get("/", (req, res) => {
   console.log('useredddddddd')
   console.log(req.session)
-  console.log(req.session.passport)
-  console.log(req.session.passport.user)
+  // console.log(req.session.passport)
+  // console.log(req.session.passport.user)
   console.log(req.isAuthenticated())
   if (req.session?.passport?.user) {
     return res.json({ isAuthenticated: true });
