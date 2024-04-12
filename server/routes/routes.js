@@ -64,7 +64,12 @@ function calculatePrice(bilingObj) {
 
 //routes to redirect to user to different pages
 router.get("/", async (req, res) => {
-  const token = req.header("Authorization").replace("Bearer ", "");
+  const header = req.header("Authorization");
+  if (!header) {
+    // Set HTTP status code 401 for Unauthorized
+    return res.json({ isAuthenticated: false });
+  }
+  const token = header.replace("Bearer ", "");
 
   if (!token || token == "null" || token == undefined) {
     return res.json({ isAuthenticated: false });
