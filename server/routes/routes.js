@@ -55,13 +55,14 @@ function calculatePrice(bilingObj) {
 
 //routes to redirect to user to different pages
 router.get("/", (req, res) => {
-  console.log('useredddddddd')
-  const myCookie = req.cookies['valid'];
-  console.log('cookie',myCookie)
-  console.log(req.session)
+  console.log("useredddddddd");
+  console.log(req.cookies);
+  // const myCookie = req.cookies["valid"];
+  // console.log("cookie", myCookie);
+  console.log(req.session);
   // console.log(req.session.passport)
   // console.log(req.session.passport.user)
-  console.log(req.isAuthenticated())
+  console.log(req.isAuthenticated());
   if (req.session?.passport?.user) {
     return res.json({ isAuthenticated: true });
   } else {

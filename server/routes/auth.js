@@ -3,6 +3,7 @@ const router = express.Router();
 const passport = require("passport");
 const Data = require("../models/Data");
 const Session = require("../models/Session");
+const cookie = require("cookie-parser");
 
 //routes for GitHub strategy
 // Route to initiate the GitHub OAuth flow
@@ -25,22 +26,23 @@ router.get(
   "/github/callback",
   passport.authenticate("github", { failureRedirect: "/" }),
   async (req, res) => {
-    res.cookie('valid','900000000');
-    const myCookie = req.cookies['valid'];
+    res.cookie("valid", "900000000");
+    cookie.signedCookie('clli','9089')
+    // const myCookie = req.cookies["valid"];
     // Successful authentication, redirect home or to dashboard
     // res.cookie("sessionID", req.sessionID, { httpOnly: true });
     const sesion = await Session.create({
       session: {
         session_id: req.sessionID,
         creation_date: new Date(),
-         github_id: req.user.githubId,
+        github_id: req.user.githubId,
         // ip: requestIp.getClientIp(req.ip),
       },
     });
-    console.log('-----sess');
+    console.log("-----sess");
     console.log(sesion);
-    console.log(req.user)
-    res.set('Set-Cookie', `sessionID=${req.sessionID}; Path=/; HttpOnly`)
+    console.log(req.user);
+    res.set("Set-Cookie", `sessionID=${req.sessionID}; Path=/; HttpOnly`);
     res.redirect(`${process.env.REACT_HOST}/dashboard`);
   }
 );
