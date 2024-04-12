@@ -6,6 +6,7 @@ const { cache } = require("express/lib/application");
 
 //authenticate user
 const isAuth = (req, res, next) => {
+  console.log("Iamprinting", req.user);
   const header = req.header("Authorization");
   if (!header || header == "" || header == undefined) {
     // Set HTTP status code 401 for Unauthorized
