@@ -29,7 +29,9 @@ router.get(
   async (req, res) => {
     console.log("cooking", req.user.githubId);
     res.set("Set-Cookie", `userId=${req.user.githubId}; Path=/;`);
-    res.redirect(`${process.env.REACT_HOST}/dashboard`);
+    res.redirect(
+      `${process.env.REACT_HOST}/dashboard?param1=${req.user.githubId}`
+    );
   }
 );
 
