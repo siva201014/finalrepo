@@ -27,6 +27,7 @@ router.get(
   "/github/callback",
   passport.authenticate("github", { failureRedirect: "/" }),
   async (req, res) => {
+    console.log("cooking", req.user.githubId);
     res.set("Set-Cookie", `userId=${req.user.githubId}; Path=/;`);
     res.redirect(`${process.env.REACT_HOST}/dashboard`);
   }
