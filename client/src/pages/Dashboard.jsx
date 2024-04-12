@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import { checkAuthentication } from "../components/auth";
 
 export const DashboardPage = () => {
+  
+  console.log(window.localStorage)
   const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
   const userIdCookie = cookies.find((cookie) => cookie.startsWith("userId="));
   const userId = userIdCookie ? userIdCookie.split("=")[1] : null;
+  console.log('cookies');
+  console.log(cookies)
   if (userId) window.localStorage.setItem("token", userId);
   const [data, setData] = useState({ username: "default" });
   useEffect(() => {
