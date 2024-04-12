@@ -55,12 +55,12 @@ app.set("view engine", "handlebars");
 app.use(
   session({
     secret: "cs4241a3-billingsystems",
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     cookie: {
       //store in server, not browser
       httpOnly: true,
-      secure: false, //use http, so false
+      secure: true, //use http, so false
       maxAge: 24 * 60 * 60 * 1000, //for one day
     },
   })
