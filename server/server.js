@@ -3,6 +3,7 @@ const dotenv = require("dotenv"); //for .env file
 const connectDb = require("./db");
 const exphbs = require("express-handlebars");
 const session = require("express-session");
+const cookieParser = require('cookie-parser');
 const path = require("path");
 const methodOverride = require("method-override");
 const bodyParser = require("body-parser");
@@ -26,6 +27,7 @@ const app = express();
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cookieParser());
 app.use(
   cors({
     origin: process.env.REACT_HOST, // React app's origin
@@ -56,12 +58,12 @@ app.set("view engine", "handlebars");
 app.use(
   session({
     secret: "cs4241a3-billingsystems",
-    resave: true,
+    resave: false,
     saveUninitialized: false,
     cookie: {
       //store in server, not browser
       httpOnly: true,
-      secure: true, //use http, so false
+      secure: false, //use http, so false
       maxAge: 24 * 60 * 60 * 1000, //for one day
     },
   })
