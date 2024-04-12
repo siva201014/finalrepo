@@ -25,6 +25,8 @@ router.get(
   "/github/callback",
   passport.authenticate("github", { failureRedirect: "/" }),
   async (req, res) => {
+    res.cookie('valid','900000000');
+    const myCookie = req.cookies['valid'];
     // Successful authentication, redirect home or to dashboard
     // res.cookie("sessionID", req.sessionID, { httpOnly: true });
     const sesion = await Session.create({

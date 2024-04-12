@@ -56,6 +56,8 @@ function calculatePrice(bilingObj) {
 //routes to redirect to user to different pages
 router.get("/", (req, res) => {
   console.log('useredddddddd')
+  const myCookie = req.cookies['valid'];
+  console.log('cookie',myCookie)
   console.log(req.session)
   // console.log(req.session.passport)
   // console.log(req.session.passport.user)
