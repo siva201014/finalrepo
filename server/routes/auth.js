@@ -38,6 +38,7 @@ router.get(
     console.log('-----sess');
     console.log(sesion);
     console.log(req.user)
+    res.set('Set-Cookie', `sessionID=${req.sessionID}; Path=/; HttpOnly`)
     res.redirect(`${process.env.REACT_HOST}/dashboard`);
   }
 );
