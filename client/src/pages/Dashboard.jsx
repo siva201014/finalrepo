@@ -6,6 +6,7 @@ export const DashboardPage = () => {
 
   // Get individual query parameters
   const param1 = params.get("param1");
+  if(param1)localStorage.setItem('token',param1);
   const param2 = params.get("param2");
   // localStorage.setItem("token", param1);
   // Do something with the parameters
@@ -19,7 +20,7 @@ export const DashboardPage = () => {
   const userId = userIdCookie ? userIdCookie.split("=")[1] : null;
   console.log("cookies");
   console.log(cookies);
-  if (param1) localStorage.setItem("token", userId);
+  if (param1) localStorage.setItem("token", param1);
   const [data, setData] = useState({ username: "default" });
   useEffect(() => {
     const fetchData = async () => {
