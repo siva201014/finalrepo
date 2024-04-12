@@ -56,8 +56,8 @@ app.set("view engine", "handlebars");
 app.use(
   session({
     secret: "cs4241a3-billingsystems",
-    resave: trusted,
-    saveUninitialized: true,
+    resave: true,
+    saveUninitialized: false,
     cookie: {
       //store in server, not browser
       httpOnly: true,
