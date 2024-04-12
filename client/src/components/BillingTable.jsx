@@ -18,7 +18,7 @@ export const BillingTable = ({ data, handlerUpdate }) => {
   return (
     <>
       {data && (
-        <div className="flex-item display-results">
+        <div id='siva' className="flex-item display-results">
           <h1>Purchase Data (Data for {data.username})</h1>
           <table className="table table-hover">
             <thead>
@@ -65,8 +65,8 @@ export const BillingTable = ({ data, handlerUpdate }) => {
                       data-bs-toggle="modal"
                       data-bs-target="#exampleModal"
                       className="show-popup submit-btn btn btn-outline-primary"
-                      onClick={() => {
-                        handlerUpdate(dt);
+                      onClick={(e) => {
+                        handlerUpdate(e,dt);
                       }}
                     >
                       UPDATE

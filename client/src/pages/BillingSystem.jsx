@@ -3,10 +3,9 @@ import { BillingTable } from "../components/BillingTable";
 import { checkAuthentication } from "../components/auth";
 import { NavComponent } from "../components/NavComponent";
 import { Notification } from "../components/Notification";
-import { LoginPage } from "./Login";
+
 export const BillingSystemPage = () => {
   const [error, setError] = useState(null);
-  const [showModal, setShowModal] = useState(true);
 
   const handleNotification = (message) => {
     if (message) setError(message);
@@ -33,7 +32,6 @@ export const BillingSystemPage = () => {
 
         if (!isAuth) window.location.href = "/";
 
-       
         const response = await fetch(
           `${window.ENVIRONMENT.api}/billingsystem`,
           {
@@ -58,7 +56,9 @@ export const BillingSystemPage = () => {
     fetchBillingData();
   }, [submitted]);
 
-  const handlerUpdate = (data) => {
+  const handlerUpdate = (e, data) => {
+    e.preventDefault();
+    e.stopPropagation();
     const dt = new Date(data.purchaseDate);
     const month = dt.getMonth() + 1;
     const date = dt.getDate();
@@ -110,6 +110,7 @@ export const BillingSystemPage = () => {
 
   const handleUpdate = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     const finalFormEndpoint = e.target.action;
 
     const data = Array.from(e.target.elements)
