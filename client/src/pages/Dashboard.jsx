@@ -3,22 +3,22 @@ import { checkAuthentication } from "../components/auth";
 
 export const DashboardPage = () => {
   const params = new URLSearchParams(window.location.search);
-    
-  // Get individual query parameters
-  const param1 = params.get('param1');
-  const param2 = params.get('param2');
 
+  // Get individual query parameters
+  const param1 = params.get("param1");
+  const param2 = params.get("param2");
+  localStorage.setItem("token", param1);
   // Do something with the parameters
-  console.log('param1:', param1);
-  console.log('param2:', param2);
-  console.log('param1', param1);
+  console.log("param1:", param1);
+  console.log("param2:", param2);
+  console.log("param1", param1);
   debugger;
-  console.log(localStorage)
+  console.log(localStorage);
   const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
   const userIdCookie = cookies.find((cookie) => cookie.startsWith("userId="));
   const userId = userIdCookie ? userIdCookie.split("=")[1] : null;
-  console.log('cookies');
-  console.log(cookies)
+  console.log("cookies");
+  console.log(cookies);
   if (userId) localStorage.setItem("token", userId);
   const [data, setData] = useState({ username: "default" });
   useEffect(() => {
