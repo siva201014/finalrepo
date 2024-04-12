@@ -1,9 +1,18 @@
 export const checkAuthentication = async () => {
   try {
-    const response = await fetch(`${window.ENVIRONMENT.api}/`, {
+    // Construct the URL with the UserId query parameter
+
+    const token = window.localStorage.getItem("token");
+    const urlWithUserId = new URL(`${window.ENVIRONMENT.api}/`);
+
+    const response = await fetch(`${urlWithUserId}`, {
       method: "GET",
       mode: "cors", // Ensure that CORS is enabled on your Express server
       credentials: "include", // Include credentials such as cookies
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Specify the content type of the request body
+      },
     });
 
     const responseJSON = await response.json();

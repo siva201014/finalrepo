@@ -25,18 +25,26 @@ export const BillingSystemPage = () => {
   const [billingFormData, setBillingFormData] = useState(initialState);
   const [initialFormData, setInitialFormData] = useState(initialState);
   const [submitted, setSubmitted] = useState(false); // State to track submission
+  const token = window.localStorage.getItem("token");
   useEffect(() => {
     const fetchBillingData = async () => {
       try {
         const isAuth = await checkAuthentication();
 
         if (!isAuth) window.location.href = "/";
+
+       
         const response = await fetch(
           `${window.ENVIRONMENT.api}/billingsystem`,
           {
             method: "GET",
             mode: "cors",
-            credentials: "include", // Ensure that credentials are included in the request
+            credentials: "include",
+            headers: {
+              // Set headers as an object
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Set Authorization header with the token
+            }, // Ensure that credentials are included in the request
           }
         );
         const jsonData = await response.json();
@@ -77,6 +85,7 @@ export const BillingSystemPage = () => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     })
@@ -114,6 +123,7 @@ export const BillingSystemPage = () => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       credentials: "include",
       body: JSON.stringify(data),

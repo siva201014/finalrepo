@@ -18,6 +18,7 @@ router.get("/github", (req, res) => {
       `${process.env.SELF_REFERENCE_URL}/auth/github/callback`
     ) +
     "&scope=profile";
+
   res.json({ redirectUrl: url });
 });
 
@@ -26,28 +27,13 @@ router.get(
   "/github/callback",
   passport.authenticate("github", { failureRedirect: "/" }),
   async (req, res) => {
-    res.cookie("valid", "900000000");
-    cookie.signedCookie('clli','9089')
-    // const myCookie = req.cookies["valid"];
-    // Successful authentication, redirect home or to dashboard
-    // res.cookie("sessionID", req.sessionID, { httpOnly: true });
-    const sesion = await Session.create({
-      session: {
-        session_id: req.sessionID,
-        creation_date: new Date(),
-        github_id: req.user.githubId,
-        // ip: requestIp.getClientIp(req.ip),
-      },
-    });
-    console.log("-----sess");
-    console.log(sesion);
-    console.log(req.user);
-    res.set("Set-Cookie", `sessionID=${req.sessionID}; Path=/; HttpOnly`);
+    res.set("Set-Cookie", `userId=${req.user.githubId}; Path=/;`);
     res.redirect(`${process.env.REACT_HOST}/dashboard`);
   }
 );
 
-router.post("/logout", (req, res, next) => {
+router.post("/logout", async (req, res, next) => {
+  res.clearCookie("userId");
   req.logout(function (err) {
     if (err) {
       return next(err);

@@ -6,10 +6,19 @@ const { cache } = require("express/lib/application");
 
 //authenticate user
 const isAuth = (req, res, next) => {
-  if (req.user) {
-    next();
+  const header = req.header("Authorization");
+  if (!header) {
+    // Set HTTP status code 401 for Unauthorized
+    res.status(401);
+
+    // Send a response indicating unauthorized access
+    res.send("Unauthorized access");
+  }
+  const token = header.replace("Bearer ", "");
+  if (!token || token == "null" || token == undefined) {
+    res.redirect(`${process.env.REACT_HOST}/`);
   } else {
-    res.redirect("/");
+    next();
   }
 };
 
@@ -54,40 +63,38 @@ function calculatePrice(bilingObj) {
 }
 
 //routes to redirect to user to different pages
-router.get("/", (req, res) => {
-  console.log("useredddddddd");
-  console.log(req.cookies);
-  // const myCookie = req.cookies["valid"];
-  // console.log("cookie", myCookie);
-  console.log(req.session);
-  // console.log(req.session.passport)
-  // console.log(req.session.passport.user)
-  console.log(req.isAuthenticated());
-  if (req.session?.passport?.user) {
-    return res.json({ isAuthenticated: true });
-  } else {
+router.get("/", async (req, res) => {
+  const token = req.header("Authorization").replace("Bearer ", "");
+
+  if (!token || token == "null" || token == undefined) {
     return res.json({ isAuthenticated: false });
+  } else {
+    return res.json({ isAuthenticated: true });
   }
 });
 
 router.get("/dashboard", isAuth, async (req, res) => {
-  return res.json({ username: req.user.displayName });
+  const token = req.header("Authorization").replace("Bearer ", "");
+  const data = await User.findOne({ githubId: token });
+  return res.json({ username: data.displayName });
 });
 
 router.get("/billingsystem", isAuth, async (req, res) => {
   try {
     let total = 0;
 
-    const billingdata = await Data.find({ githubId: req.user.id }).lean();
+    const token = req.header("Authorization").replace("Bearer ", "");
+    const user = await User.findOne({ githubId: token });
+    const billingdata = await Data.find({ githubId: token }).lean();
 
     for (const item of billingdata) {
       total = total + (await item).afterDiscount; //calculate total price
     }
 
     res.json({
-      username: req.user.displayName,
+      username: user.displayName,
       billingdata: billingdata,
-      id: req.user.id,
+      id: token,
       total: total,
     });
   } catch (err) {
@@ -120,9 +127,10 @@ router.post("/add-data", isAuth, async (req, res) => {
     req.body.totalPrice = billingData.totalprice;
     req.body.discount = billingData.discount;
     req.body.afterDiscount = billingData.afterdiscount;
+    req.body.githubId = req.header("Authorization").replace("Bearer ", "");
+
     await Data.create(req.body); //add data to database
-    //res.redirect('/billingsystem')
-    console.log(req.body);
+
     return res.json(req.body);
   } catch (err) {
     //res.render('error')

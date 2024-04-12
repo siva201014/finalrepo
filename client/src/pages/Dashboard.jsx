@@ -2,15 +2,25 @@ import React, { useEffect, useState } from "react";
 import { checkAuthentication } from "../components/auth";
 
 export const DashboardPage = () => {
+  const cookies = document.cookie.split(";").map((cookie) => cookie.trim());
+  const userIdCookie = cookies.find((cookie) => cookie.startsWith("userId="));
+  const userId = userIdCookie ? userIdCookie.split("=")[1] : null;
+  if (userId) window.localStorage.setItem("token", userId);
   const [data, setData] = useState({ username: "default" });
   useEffect(() => {
     const fetchData = async () => {
       const isAuth = await checkAuthentication();
+
+      const token = window.localStorage.getItem("token");
       if (!isAuth) window.location.href = "/";
       const response = await fetch(`${window.ENVIRONMENT.api}/dashboard`, {
         method: "GET",
         mode: "cors",
-        credentials: "include", // Ensure that credentials are included in the request
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Specify the content type of the request body
+        }, // Ensure that credentials are included in the request
       });
       const jsonData = await response.json();
 
@@ -94,7 +104,7 @@ export const DashboardPage = () => {
                     d="M.146 8.354a.5.5 0 0 1 0-.708l3-3a.5.5 0 1 1 .708.708L1.707 7.5H10.5a.5.5 0 0 1 0 1H1.707l2.147 2.146a.5.5 0 0 1-.708.708z"
                   />
                 </svg>
-                <a href="/auth/logout">Logout</a>
+                <a href="/logout">Logout</a>
               </div>
             </div>
           </div>
