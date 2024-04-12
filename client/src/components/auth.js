@@ -2,7 +2,7 @@ export const checkAuthentication = async () => {
   try {
     // Construct the URL with the UserId query parameter
 
-    const token = window.localStorage.getItem("token");
+    const token = localStorage.getItem("token");
     const urlWithUserId = new URL(`${window.ENVIRONMENT.api}/`);
 
     const response = await fetch(`${urlWithUserId}`, {

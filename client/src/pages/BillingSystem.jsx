@@ -24,7 +24,7 @@ export const BillingSystemPage = () => {
   const [billingFormData, setBillingFormData] = useState(initialState);
   const [initialFormData, setInitialFormData] = useState(initialState);
   const [submitted, setSubmitted] = useState(false); // State to track submission
-  const token = window.localStorage.getItem("token");
+  const token = localStorage.getItem("token");
   useEffect(() => {
     const fetchBillingData = async () => {
       try {

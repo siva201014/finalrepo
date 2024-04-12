@@ -5,10 +5,12 @@ export const BillingTable = ({ data, handlerUpdate }) => {
   const deleteRow = async (id) => {
     //saving the object containing the index to remove
     let payload = JSON.stringify({ _id: id });
+    const token = localStorage.getItem('token');
 
     const response = await fetch(`${window.ENVIRONMENT.api}/delete_data`, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       credentials: "include",
       method: "DELETE",
